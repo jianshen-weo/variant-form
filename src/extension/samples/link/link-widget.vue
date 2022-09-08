@@ -2,9 +2,9 @@
  * @Descripttion: 
  * @version: 
  * @Author: lilm
- * @Date: 2022-09-05 10:02:35
+ * @Date: 2022-09-06 10:41:31
  * @LastEditors: lilm
- * @LastEditTime: 2022-09-06 10:48:44
+ * @LastEditTime: 2022-09-06 14:36:37
 -->
 <template>
   <static-content-wrapper
@@ -18,18 +18,18 @@
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
   >
-    <el-alert
+    <el-link
       ref="fieldEditor"
-      :title="field.options.title"
       :type="field.options.type"
-      :description="field.options.description"
-      :closable="field.options.closable"
-      :center="field.options.center"
-      :close-text="field.options.closeText"
-      :show-icon="field.options.showIcon"
-      :effect="field.options.effect"
-      @close="handleCloseCustomEvent"
-    ></el-alert>
+      :underline="field.options.underline"
+      :disabled="field.options.disabled"
+      :href="field.options.href"
+      :icon="field.options.icon"
+      :target="field.options.target"
+      @click="handleClickCustomEvent"
+    >
+      {{ field.options.title }}
+    </el-link>
   </static-content-wrapper>
 </template>
 
@@ -40,7 +40,7 @@ import i18n from '@/utils/i18n';
 import fieldMixin from '@/components/form-designer/form-widget/field-widget/fieldMixin';
 
 export default {
-  name: 'alert-widget',
+  name: 'link-widget',
   componentName: 'FieldWidget', //必须固定为FieldWidget，用于接收父级组件的broadcast事件
   mixins: [emitter, fieldMixin, i18n],
   props: {
@@ -79,9 +79,9 @@ export default {
     this.unregisterFromRefList();
   },
   methods: {
-    handleCloseCustomEvent() {
-      if (!!this.field.options.onClose) {
-        let changeFn = new Function(this.field.options.onClose);
+    handleClickCustomEvent() {
+      if (!!this.field.options.onClick) {
+        let changeFn = new Function(this.field.options.onClick);
         changeFn.call(this);
       }
     },

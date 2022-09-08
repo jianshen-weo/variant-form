@@ -1,8 +1,17 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: lilm
+ * @Date: 2022-09-05 10:02:35
+ * @LastEditors: lilm
+ * @LastEditTime: 2022-09-06 14:36:01
+ */
 export default {
   extension: {
     widgetLabel: {
       card: '卡片',
       alert: '提示',
+      link: '超链接',
     },
 
     setting: {
@@ -20,7 +29,12 @@ export default {
       showIcon: '显示图标',
       effect: '显示效果',
 
+      linkTitle: '链接文本',
+      linkType: '类型',
+      underline: '是否下划线',
+      icon: '图标类名',
+      href: '链接地址',
+      linkTarget: '打开方式',
     },
-
-  }
-}
+  },
+};

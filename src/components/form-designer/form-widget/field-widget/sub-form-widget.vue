@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: lilm
+ * @Date: 2022-09-07 15:36:18
+ * @LastEditors: lilm
+ * @LastEditTime: 2022-09-08 16:07:59
+-->
 <template>
   <container-wrapper
     :designer="designer"
@@ -6,22 +14,14 @@
     :parent-list="parentList"
     :index-of-parent-list="indexOfParentList"
   >
-    <el-card
+    <div
+      class="sub-form-container"
       :key="widget.id"
-      class="card-container"
-      @click.native.stop="selectWidget(widget)"
-      :shadow="widget.options.shadow"
-      :style="{ width: widget.options.cardWidth + '!important' || '' }"
-      :class="[selected ? 'selected' : '', !!widget.options.folded ? 'folded' : '', customClass]"
+      @click.stop="selectWidget(widget)"
+      :class="[selected ? 'selected' : '']"
     >
-      <div slot="header" class="clear-fix">
+      <div class="clear-fix">
         <span>{{ widget.options.label }}</span>
-        <i
-          v-if="widget.options.showFold"
-          class="float-right"
-          :class="[!widget.options.folded ? 'el-icon-arrow-down' : 'el-icon-arrow-up']"
-          @click="toggleCard"
-        ></i>
       </div>
       <draggable
         :list="widget.widgetList"
@@ -33,33 +33,20 @@
       >
         <transition-group name="fade" tag="div" class="form-widget-list">
           <template v-for="(subWidget, swIdx) in widget.widgetList">
-            <template v-if="'container' === subWidget.category">
-              <component
-                :is="subWidget.type + '-widget'"
-                :widget="subWidget"
-                :designer="designer"
-                :key="subWidget.id"
-                :parent-list="widget.widgetList"
-                :index-of-parent-list="swIdx"
-                :parent-widget="widget"
-              ></component>
-            </template>
-            <template v-else>
-              <component
-                :is="subWidget.type + '-widget'"
-                :field="subWidget"
-                :designer="designer"
-                :key="subWidget.id"
-                :parent-list="widget.widgetList"
-                :index-of-parent-list="swIdx"
-                :parent-widget="widget"
-                :design-state="true"
-              ></component>
-            </template>
+            <component
+              :is="subWidget.type + '-widget'"
+              :field="subWidget"
+              :designer="designer"
+              :key="subWidget.id"
+              :parent-list="widget.widgetList"
+              :index-of-parent-list="swIdx"
+              :parent-widget="widget"
+              :design-state="true"
+            ></component>
           </template>
         </transition-group>
       </draggable>
-    </el-card>
+    </div>
   </container-wrapper>
 </template>
 
@@ -72,7 +59,7 @@ import FieldComponents from '@/components/form-designer/form-widget/field-widget
 import refMixinDesign from '@/components/form-designer/refMixinDesign';
 
 export default {
-  name: 'card-widget',
+  name: 'sub-form-widget',
   componentName: 'ContainerWidget',
   mixins: [i18n, containerMixin, refMixinDesign],
   inject: ['refList'],
@@ -107,43 +94,25 @@ export default {
      * @returns {boolean}
      */
     checkContainerMove(evt) {
+      console.log('🚀 ~ file: sub-form-widget.vue ~ line 97 ~ checkContainerMove ~ evt', evt);
       return true;
-    },
-
-    toggleCard() {
-      this.widget.options.folded = !this.widget.options.folded;
-    },
-
-    /**
-     * 设置折叠/打开状态
-     * @param folded
-     */
-    setFolded(folded) {
-      this.widget.options.folded = !!folded;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.card-container.selected {
+.sub-form-container.selected {
   outline: 2px solid $--color-primary !important;
 }
 
-.card-container {
-  margin: 3px;
+.sub-form-container {
+  padding: 8px;
+  border: 1px dashed #369;
 
   .form-widget-list {
-    min-height: 28px;
+    min-height: 80px;
   }
-}
-
-::v-deep .el-card__header {
-  padding: 10px 12px;
-}
-
-.folded ::v-deep .el-card__body {
-  display: none;
 }
 
 .clear-fix:before,
